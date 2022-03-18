@@ -1,2 +1,2 @@
-# IFRNet
-IFRNet: Intermediate Feature Refine Network for Efficient Frame Interpolation (CVPR 2022)
+# IFRNet: Intermediate Feature Refine Network for Efficient Frame Interpolation
+The official PyTorch implementation of IFRNet (CVPR 2022).
