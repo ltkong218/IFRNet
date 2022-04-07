@@ -1,6 +1,8 @@
 # IFRNet: Intermediate Feature Refine Network for Efficient Frame Interpolation
 The official PyTorch implementation of IFRNet (CVPR 2022).
 
+Authors: [Lingtong Kong](https://scholar.google.com.hk/citations?user=KKzKc_8AAAAJ&hl=zh-CN), [Boyuan Jiang](https://byjiang.com/), Donghao Luo, Wenqing Chu, Xiaoming Huang, [Ying Tai](https://tyshiwo.github.io/), Chengjie Wang, [Jie Yang](http://www.pami.sjtu.edu.cn/jieyang)
+
 ![](./figures/benchmark.png)
 
 ## Abstract
@@ -8,5 +10,6 @@ Prevailing video frame interpolation algorithms, that generate the intermediate 
 
 
 ## Middlebury Benchmark Result
+Results on the [Middlebury](https://vision.middlebury.edu/flow/eval/results/results-i1.php) online benchmark.
 ![](./figures/middlebury.png)
 
