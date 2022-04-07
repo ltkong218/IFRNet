@@ -18,13 +18,13 @@ Results on the [Middlebury](https://vision.middlebury.edu/flow/eval/results/resu
 ## Multi-Frame Interpolation
 Quantitative comparison for 8x interpolation of methods using 2 input frames.
 
-<img src=./figures/8x_interpolation.png width=540 />
+<img src=./figures/8x_interpolation.png width=480 />
 
 Qualitative results of IFRNet for 8x interpolation on GoPro and Adobe240 test datasets. Each video has 9 frames where the first and the last frames are input, and the middle 7 frames are predicted by IFRNet.
 
 <p float="left">
-  <img src=./figures/fig1_1.gif width=320 />
-  <img src=./figures/fig1_2.gif width=320 />
-  <img src=./figures/fig1_3.gif width=320 /> 
+  <img src=./figures/fig1_1.gif width=270 />
+  <img src=./figures/fig1_2.gif width=270 />
+  <img src=./figures/fig1_3.gif width=270 /> 
 </p>
 
