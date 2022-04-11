@@ -5,11 +5,17 @@ Authors: [Lingtong Kong](https://scholar.google.com.hk/citations?user=KKzKc_8AAA
 
 Speed, accuracy and parameters comparison on Vimeo90K triplet test dataset.
 
-![](./figures/benchmark.png)
+![](./figures/vimeo90k.png)
 
 
 ## Abstract
 Prevailing video frame interpolation algorithms, that generate the intermediate frames from consecutive inputs, typically rely on complex model architectures with heavy parameters or large delay, hindering them from diverse real-time applications. In this work, we devise an efficient encoder-decoder based network, termed IFRNet, for fast intermediate frame synthesizing. It first extracts pyramid features from given inputs, and then refines the bilateral intermediate flow fields together with a powerful intermediate feature until generating the desired output. The gradually refined intermediate feature can not only facilitate intermediate flow estimation, but also compensate for contextual details, making IFRNet do not need additional synthesis or refinement module. To fully release its potential, we further propose a novel task-oriented optical flow distillation loss to focus on learning the useful teacher knowledge towards frame synthesizing. Meanwhile, a new geometry consistency regularization term is imposed on the gradually refined intermediate features to keep better structure layout. Experiments on various benchmarks demonstrate the excellent performance and fast inference speed of proposed approaches. Code is available at [https://github.com/ltkong218/IFRNet](https://github.com/ltkong218/IFRNet).
+
+
+## Quantitative Comparison
+Proposed IFRNet achieves state-of-the-art frame interpolation accuracy with less inference time and computation complexity. We expect proposed single encoder-decoder joint refinement based IFRNet to be a useful component for many frame rate up-conversion and intermediate view synthesis systems.
+
+![](./figures/benchmarks.png)
 
 
 ## Qualitative Comparison
