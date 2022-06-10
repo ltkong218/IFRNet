@@ -1,6 +1,5 @@
 # IFRNet: Intermediate Feature Refine Network for Efficient Frame Interpolation
 The official PyTorch implementation of [IFRNet](https://arxiv.org/abs/2205.14620) (CVPR 2022).
-Paper is available [here](https://arxiv.org/abs/2205.14620), code is coming soon!
 
 Authors: [Lingtong Kong](https://scholar.google.com.hk/citations?user=KKzKc_8AAAAJ&hl=zh-CN), [Boyuan Jiang](https://byjiang.com/), Donghao Luo, Wenqing Chu, Xiaoming Huang, [Ying Tai](https://tyshiwo.github.io/), Chengjie Wang, [Jie Yang](http://www.pami.sjtu.edu.cn/jieyang)
 
