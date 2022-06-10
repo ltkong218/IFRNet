@@ -8,8 +8,12 @@ Existing flow based frame interpolation methods almost all first estimate or mod
 
 ![](./figures/vimeo90k.png)
 
+## Requirements
+1. PyTorch >= 1.3.0
+2. Set the right dataset path on your machine.
+
 ## Download Pre-trained Models and Play with the Demos
-Figures from left to right are overlaid input frames, x2 and 8x video interpolation results respectively.
+Figures from left to right are overlaid input frames, 2x and 8x video interpolation results respectively.
 <p float="left">
   <img src=./figures/img_overlaid.png width=270 />
   <img src=./figures/out_2x.gif width=270 />
@@ -18,7 +22,7 @@ Figures from left to right are overlaid input frames, x2 and 8x video interpolat
 
 1. Download our pre-trained models in this [link](https://www.dropbox.com/sh/hrewbpedd2cgdp3/AADbEivu0-CKDQcHtKdMNJPJa?dl=0), and then put file <code> checkpoints</code> into the root dir.
 
-2. Run the following scripts to generate x2 and 8x frame interpolation demos
+2. Run the following scripts to generate 2x and 8x frame interpolation demos
 <pre><code>$ python demo_2x.py</code>
 <code>$ python demo_8x.py</code></pre>
 
