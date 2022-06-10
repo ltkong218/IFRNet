@@ -3,8 +3,12 @@ The official PyTorch implementation of [IFRNet](https://arxiv.org/abs/2205.14620
 
 Authors: [Lingtong Kong](https://scholar.google.com.hk/citations?user=KKzKc_8AAAAJ&hl=zh-CN), [Boyuan Jiang](https://byjiang.com/), Donghao Luo, Wenqing Chu, Xiaoming Huang, [Ying Tai](https://tyshiwo.github.io/), Chengjie Wang, [Jie Yang](http://www.pami.sjtu.edu.cn/jieyang)
 
-## Download Pre-trained Models and Run the Demo 
-
+## Download Pre-trained Models and Run the Demos
+<p float="left">
+  <img src=./figures/img_overlaid.png width=270 />
+  <img src=./figures/out_2x.gif width=270 />
+  <img src=./figures/out_8x.gif width=270 /> 
+</p>
 
 ## Training on Vimeo90K Triplet Dataset for 2x Frame Interpolation
 1. Generate optical flow pseudo label
