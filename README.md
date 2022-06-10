@@ -81,3 +81,12 @@ Each video has 9 frames, where the first and the last frames are input, and the 
   <img src=./figures/fig1_2.gif width=270 />
   <img src=./figures/fig1_3.gif width=270 /> 
 </p>
+
+## Citation
+When using any parts of the Software or the Paper in your work, please cite the following paper:
+<pre><code>@InProceedings{Kong_2022_CVPR, 
+  author={Kong, Lingtong and Jiang, Boyuan and Luo, Donghao and Chu, Wenqing and Huang, Xiaoming and Tai, Ying and Wang, Chengjie and Yang, Jie}, 
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, 
+  title={IFRNet: Intermediate Feature Refine Network for Efficient Frame Interpolation}, 
+  year={2022}
+}</code></pre>
