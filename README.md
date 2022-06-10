@@ -18,7 +18,7 @@ Figures from left to right are overlaid input frames, x2 and 8x video interpolat
 
 1. Download our pre-trained models in this [link](https://www.dropbox.com/sh/hrewbpedd2cgdp3/AADbEivu0-CKDQcHtKdMNJPJa?dl=0), and then put file <code> checkpoints</code> into the root dir.
 
-2. Run the following scripts to generate x2 and 8x frame interpolation demos.
+2. Run the following scripts to generate x2 and 8x frame interpolation demos
 <pre><code>$ python demo_2x.py</code>
 <code>$ python demo_8x.py</code></pre>
 
@@ -33,17 +33,17 @@ Figures from left to right are overlaid input frames, x2 and 8x video interpolat
 <code>$ python -m torch.distributed.launch --nproc_per_node=4 train_vimeo90k.py --world_size 4 --model_name 'IFRNet_S' --epochs 300 --batch_size 6 --lr_start 1e-4 --lr_end 1e-5</code></pre>
 
 ## Benchmarks for 2x Frame Interpolation
-To test speed and parameters you can run
+To test running time and model parameters, you can run
 <pre><code>$ python benchmarks/speed_parameters.py</code></pre>
-To test on Vimeo90K you can run
-<pre><code>$ python benchmarks/Vimeo90K.py</code></pre>
-To test on UCF101 you can run
-<pre><code>$ python benchmarks/UCF101.py</code></pre>
-To test on SNU-FILM you can run
-<pre><code>$ python benchmarks/SNU_FILM.py</code></pre>
+
+To test frame interpolation accuracy on Vimeo90K, UCF101 and SNU-FILM datasets, you can run
+<pre><code>$ python benchmarks/Vimeo90K.py</code>
+<code>$ python benchmarks/UCF101.py</code>
+<code>$ python benchmarks/SNU_FILM.py</code></pre>
 
 ## Quantitative Comparison for 2x Frame Interpolation
 Proposed IFRNet achieves state-of-the-art frame interpolation accuracy with less inference time and computation complexity. We expect proposed single encoder-decoder joint refinement based IFRNet to be a useful component for many frame rate up-conversion and intermediate view synthesis systems.
+
 ![](./figures/benchmarks.png)
 
 
@@ -67,11 +67,13 @@ Results on the [Middlebury](https://vision.middlebury.edu/flow/eval/results/resu
 <code>$ python -m torch.distributed.launch --nproc_per_node=4 train_vimeo90k.py --world_size 4 --model_name 'IFRNet_L' --epochs 300 --batch_size 6 --lr_start 1e-4 --lr_end 1e-5</code>
 <code>$ python -m torch.distributed.launch --nproc_per_node=4 train_vimeo90k.py --world_size 4 --model_name 'IFRNet_S' --epochs 300 --batch_size 6 --lr_start 1e-4 --lr_end 1e-5</code></pre>
 
+Since inter-frame motion in 8x interpolation setting is relatively small, task-oriented flow distillation loss is omitted here. Due to the GoPro training set is a relatively small dataset, we advise to use your specific datasets to train slow-motion generation for better results.
+
 ## Quantitative Comparison for 8x Frame Interpolation
 
 <img src=./figures/8x_interpolation.png width=480 />
 
-## Qualitative Results on GoPro and Adobe240 Datasets
+## Qualitative Results on GoPro and Adobe240 Datasets for 8x Frame Interpolation
 Each video has 9 frames, where the first and the last frames are input, and the middle 7 frames are predicted by IFRNet.
 
 <p float="left">
