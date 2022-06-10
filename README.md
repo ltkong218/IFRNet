@@ -4,22 +4,20 @@ The official PyTorch implementation of [IFRNet](https://arxiv.org/abs/2205.14620
 Authors: [Lingtong Kong](https://scholar.google.com.hk/citations?user=KKzKc_8AAAAJ&hl=zh-CN), [Boyuan Jiang](https://byjiang.com/), Donghao Luo, Wenqing Chu, Xiaoming Huang, [Ying Tai](https://tyshiwo.github.io/), Chengjie Wang, [Jie Yang](http://www.pami.sjtu.edu.cn/jieyang)
 
 ## Highlights
-Existing flow based frame interpolation methods almost all first estimate or model intermediate optical flow, and then use flow warped context features to synthesize target frame. However, they ignore the mutual promotion of intermediate optical flow and intermediate context feature. Also, their cascaded architecture can substantially increase the inference delay and model parameters, blocking them from lots of mobile and real-time applications. For the first time, we merge above separated flow estimation and context feature refinement into a single encoder-decoder based IFRNet for compactness and fast inference, where these two crucial elements can benefit from each other. Moreover, task-oriented flow distillation loss and feature space geometry consistency loss are newly proposed to promote intermediate motion estimation and intermediate feature reconstruction of IFRNet, respectively. Benchmark results demonstrate that our IFRNet not only achieves state-of-the-art VFI accuracy, but also enjoys fast inference speed and lightweight model size.
+Existing flow based frame interpolation methods almost all first estimate or model intermediate optical flow, and then use flow warped context features to synthesize target frame. However, they ignore the mutual promotion of intermediate optical flow and intermediate context feature. Also, their cascaded architecture can substantially increase the inference delay and model parameters, blocking them from lots of mobile and real-time applications. For the first time, we merge above separated flow estimation and context feature refinement into a single encoder-decoder based IFRNet for compactness and fast inference, where these two crucial elements can benefit from each other. Moreover, task-oriented flow distillation loss and feature space geometry consistency loss are newly proposed to promote intermediate motion estimation and intermediate feature reconstruction of IFRNet, respectively. Benchmark results demonstrate that our IFRNet not only achieves state-of-the-art VFI accuracy, but also enjoys fast inference speed and lightweight model size.  
 ![](./figures/vimeo90k.png)
 
 ## Download Pre-trained Models and Run the Demos
+Figures from left to right are overlaid input frames, x2 and 8x frame interpolation results respectively.  
 <p float="left">
   <img src=./figures/img_overlaid.png width=270 />
   <img src=./figures/out_2x.gif width=270 />
   <img src=./figures/out_8x.gif width=270 /> 
 </p>
-Figures from left to right are overlaid input frames, x2 and 8x frame interpolation results respectively.
-
-
 1. Download our pre-trained models in this [link](https://www.dropbox.com/sh/hrewbpedd2cgdp3/AADbEivu0-CKDQcHtKdMNJPJa?dl=0), and put file <code> checkpoints</code> into the root dir.
 2. Run the following scripts to generate x2 and 8x frame interpolation demos.
-<pre><code>$ python demo_2x.py</code></pre>
-<pre><code>$ python demo_8x.py</code></pre>
+<pre><code>$ python demo_2x.py</code>
+<code>$ python demo_8x.py</code></pre>
 
 
 ## Training on Vimeo90K Triplet Dataset for 2x Frame Interpolation
