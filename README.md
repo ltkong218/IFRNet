@@ -12,13 +12,23 @@ Speed, accuracy and parameters comparison on Vimeo90K triplet test dataset.
 Prevailing video frame interpolation algorithms, that generate the intermediate frames from consecutive inputs, typically rely on complex model architectures with heavy parameters or large delay, hindering them from diverse real-time applications. In this work, we devise an efficient encoder-decoder based network, termed IFRNet, for fast intermediate frame synthesizing. It first extracts pyramid features from given inputs, and then refines the bilateral intermediate flow fields together with a powerful intermediate feature until generating the desired output. The gradually refined intermediate feature can not only facilitate intermediate flow estimation, but also compensate for contextual details, making IFRNet do not need additional synthesis or refinement module. To fully release its potential, we further propose a novel task-oriented optical flow distillation loss to focus on learning the useful teacher knowledge towards frame synthesizing. Meanwhile, a new geometry consistency regularization term is imposed on the gradually refined intermediate features to keep better structure layout. Experiments on various benchmarks demonstrate the excellent performance and fast inference speed of proposed approaches. Code is available at [https://github.com/ltkong218/IFRNet](https://github.com/ltkong218/IFRNet).
 
 ## Training on Vimeo90K Triplet Dataset for 2x Frame Interpolation
-1. Generate optical flow pseudo label 
+1. Generate optical flow pseudo label
 <pre><code>$ python generate_flow.py</code></pre>
 
 2. Start training
 <pre><code>$ python -m torch.distributed.launch --nproc_per_node=4 train_vimeo90k.py --world_size 4 --model_name 'IFRNet' --epochs 300 --batch_size 6 --lr_start 1e-4 --lr_end 1e-5</code></pre>
 <pre><code>$ python -m torch.distributed.launch --nproc_per_node=4 train_vimeo90k.py --world_size 4 --model_name 'IFRNet_L' --epochs 300 --batch_size 6 --lr_start 1e-4 --lr_end 1e-5</code></pre>
 <pre><code>$ python -m torch.distributed.launch --nproc_per_node=4 train_vimeo90k.py --world_size 4 --model_name 'IFRNet_S' --epochs 300 --batch_size 6 --lr_start 1e-4 --lr_end 1e-5</code></pre>
+
+## Benchmarks
+1. Test speed and parameters
+<pre><code>$ python benchmarks/speed_parameters.py</code></pre>
+2. Test on Vimeo90K
+<pre><code>$ python benchmarks/Vimeo90K.py</code></pre>
+3. Test on UCF101
+<pre><code>$ python benchmarks/UCF101.py</code></pre>
+4. Test on SNU-FILM
+<pre><code>$ python benchmarks/SNU_FILM.py</code></pre>
 
 ## Quantitative Comparison
 Proposed IFRNet achieves state-of-the-art frame interpolation accuracy with less inference time and computation complexity. We expect proposed single encoder-decoder joint refinement based IFRNet to be a useful component for many frame rate up-conversion and intermediate view synthesis systems.
