@@ -47,7 +47,7 @@ To test frame interpolation accuracy on Vimeo90K, UCF101 and SNU-FILM datasets, 
 <code>$ python benchmarks/SNU_FILM.py</code></pre>
 
 ## Quantitative Comparison for 2x Frame Interpolation
-Proposed IFRNet achieves state-of-the-art frame interpolation accuracy with less inference time and computation complexity. We expect proposed single encoder-decoder joint refinement based IFRNet to be a useful component for many frame rate up-conversion and intermediate view synthesis systems.
+Proposed IFRNet achieves state-of-the-art frame interpolation accuracy with less inference time and computation complexity. We expect proposed single encoder-decoder joint refinement based IFRNet to be a useful component for many frame rate up-conversion and intermediate view synthesis systems. Time and FLOPs are measured on 1280 x 720 resolution.
 
 ![](./figures/benchmarks.png)
 
