@@ -65,6 +65,10 @@ Results on the [Middlebury](https://vision.middlebury.edu/flow/eval/results/resu
 
 ![](./figures/middlebury.png)
 
+Results on the Middlebury Other dataset.
+
+![](./figures/middlebury_other.png)
+
 
 ## Training on GoPro Dataset for 8x Frame Interpolation
 1. Start training by executing one of the following commands with selected model
