@@ -4,7 +4,8 @@ import re
 import numpy as np
 from imageio import imread, imwrite
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
