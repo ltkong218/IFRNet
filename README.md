@@ -9,7 +9,7 @@ Existing flow-based frame interpolation methods almost all first estimate or mod
 ![](./figures/vimeo90k.png)
 
 ## Preparation
-1. PyTorch >= 1.3.0
+1. PyTorch >= 1.3.0 (We have verified that this repository supports Python 3.6/3.7, PyTorch 1.3.0/1.9.1).
 2. Download training and test datasets: [Vimeo90K](http://toflow.csail.mit.edu/), [UCF101](https://liuziwei7.github.io/projects/VoxelFlow), [SNU-FILM](https://myungsub.github.io/CAIN/), [Middlebury](https://vision.middlebury.edu/flow/data/), [GoPro](https://seungjunnah.github.io/Datasets/gopro.html) and [Adobe240](http://www.cs.ubc.ca/labs/imager/tr/2017/DeepVideoDeblurring/).
 3. Set the right dataset path on your machine.
 
