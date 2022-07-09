@@ -134,3 +134,8 @@ def calculate_ssim(img1, img2, window_size=11, window=None, size_average=True, f
 def calculate_psnr(img1, img2):
     psnr = -10 * torch.log10(((img1 - img2) * (img1 - img2)).mean())
     return psnr
+
+
+def calculate_ie(img1, img2):
+    ie = torch.abs(torch.round(img1 * 255.0) - torch.round(img2 * 255.0)).mean()
+    return ie
