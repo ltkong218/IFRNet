@@ -111,8 +111,8 @@ def train(args, ddp_model):
             psnr = evaluate(args, ddp_model, dataloader_val, epoch, logger)
             if psnr > best_psnr:
                 best_psnr = psnr
-                torch.save(ddp_model.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'best'))
-            torch.save(ddp_model.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'latest'))
+                torch.save(ddp_model.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'best'))
+            torch.save(ddp_model.module.state_dict(), '{}/{}_{}.pth'.format(log_path, args.model_name, 'latest'))
 
         dist.barrier()
 
@@ -188,12 +188,12 @@ if __name__ == '__main__':
     args.num_workers = args.batch_size * 4
     
     model = Model().to(args.device)
-
-    ddp_model = DDP(model, device_ids=[args.local_rank], output_device=args.local_rank)
     
     if args.resume_epoch != 0:
-        ddp_model.load_state_dict(torch.load(args.resume_path, map_location='cpu'))
-
+        model.load_state_dict(torch.load(args.resume_path, map_location='cpu'))
+        
+    ddp_model = DDP(model, device_ids=[args.local_rank], output_device=args.local_rank)
+    
     train(args, ddp_model)
 
     dist.destroy_process_group()
