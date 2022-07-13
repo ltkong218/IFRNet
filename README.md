@@ -92,7 +92,7 @@ Each video has 9 frames, where the first and the last frames are input, and the 
 </p>
 
 ## Citation
-If you think this project is helpful, please :star: it. When using any parts of the Software or the Paper in your work, please cite the following paper:
+When using any parts of the Software or the Paper in your work, please cite the following paper:
 <pre><code>@InProceedings{Kong_2022_CVPR, 
   author = {Kong, Lingtong and Jiang, Boyuan and Luo, Donghao and Chu, Wenqing and Huang, Xiaoming and Tai, Ying and Wang, Chengjie and Yang, Jie}, 
   title = {IFRNet: Intermediate Feature Refine Network for Efficient Frame Interpolation}, 
