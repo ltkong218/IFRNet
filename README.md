@@ -91,6 +91,10 @@ Each video has 9 frames, where the first and the last frames are input, and the 
   <img src=./figures/fig1_3.gif width=270 /> 
 </p>
 
+## ncnn Implementation of IFRNet
+
+[ifrnet-ncnn-vulkan](https://github.com/nihui/ifrnet-ncnn-vulkan) uses [ncnn project](https://github.com/Tencent/ncnn) as the universal neural network inference framework. This package includes all the binaries and models required. It is portable, so no CUDA or PyTorch runtime environment is needed.
+
 ## Citation
 When using any parts of the Software or the Paper in your work, please cite the following paper:
 <pre><code>@InProceedings{Kong_2022_CVPR, 
