@@ -9,6 +9,9 @@ from models.IFRNet import Model
 # from models.IFRNet_L import Model
 # from models.IFRNet_S import Model
 
+if torch.cuda.is_available():
+    torch.backends.cudnn.enabled = True
+    torch.backends.cudnn.benchmark = True
 
 img0 = torch.randn(1, 3, 256, 448).cuda()
 img1 = torch.randn(1, 3, 256, 448).cuda()
