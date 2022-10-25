@@ -6,6 +6,15 @@ Authors: [Lingtong Kong](https://scholar.google.com.hk/citations?user=KKzKc_8AAA
 ## Highlights
 Existing flow-based frame interpolation methods almost all first estimate or model intermediate optical flow, and then use flow warped context features to synthesize target frame. However, they ignore the mutual promotion of intermediate optical flow and intermediate context feature. Also, their cascaded architecture can substantially increase the inference delay and model parameters, blocking them from lots of mobile and real-time applications. For the first time, we merge above separated flow estimation and context feature refinement into a single encoder-decoder based IFRNet for compactness and fast inference, where these two crucial elements can benefit from each other. Moreover, task-oriented flow distillation loss and feature space geometry consistency loss are newly proposed to promote intermediate motion estimation and intermediate feature reconstruction of IFRNet, respectively. Benchmark results demonstrate that our IFRNet not only achieves state-of-the-art VFI accuracy, but also enjoys fast inference speed and lightweight model size.
 
+## YouTube Demos
+[[4K60p] うたわれるもの 偽りの仮面 OP フレーム補間+超解像 (IFRnetとReal-CUGAN)](https://www.youtube.com/watch?v=tV2imgGS-5Q)
+
+[[4K60p] 天神乱漫 -LUCKY or UNLUCKY!?- OP (IFRnetとReal-CUGAN)](https://www.youtube.com/watch?v=NtpJqDZaM-4)
+
+[RIFE IFRnet 比較](https://www.youtube.com/watch?v=lHqnOQgpZHQ)
+
+[IFRNet frame interpolation](https://www.youtube.com/watch?v=ygSdCCZCsZU)
+
 ![](./figures/vimeo90k.png)
 
 ## Preparation
