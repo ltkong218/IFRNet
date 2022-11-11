@@ -15,6 +15,8 @@ from datasets import Vimeo90K_Train_Dataset, Vimeo90K_Test_Dataset
 from metric import calculate_psnr, calculate_ssim
 from utils import AverageMeter
 import logging
+import wandb
+
 
 
 def get_lr(args, iters):
@@ -28,7 +30,7 @@ def set_lr(optimizer, lr):
         param_group['lr'] = lr
 
 
-def train(args, ddp_model):
+def train(args, ddp_model,model):
     local_rank = args.local_rank
     print('Distributed Data Parallel Training IFRNet on Rank {}'.format(local_rank))
 
@@ -50,13 +52,14 @@ def train(args, ddp_model):
         logger.addHandler(fhlr)
         logger.info(args)
 
-    dataset_train = Vimeo90K_Train_Dataset(dataset_dir='/home/ltkong/Datasets/Vimeo90K/vimeo_triplet', augment=True)
+    vimeo90k_dir = '/ocean/projects/cis220078p/vjain1/data/vimeo_triplet'
+    dataset_train = Vimeo90K_Train_Dataset(dataset_dir=vimeo90k_dir, augment=True)
     sampler = DistributedSampler(dataset_train)
     dataloader_train = DataLoader(dataset_train, batch_size=args.batch_size, num_workers=args.num_workers, pin_memory=True, drop_last=True, sampler=sampler)
     args.iters_per_epoch = dataloader_train.__len__()
     iters = args.resume_epoch * args.iters_per_epoch
     
-    dataset_val = Vimeo90K_Test_Dataset(dataset_dir='/home/ltkong/Datasets/Vimeo90K/vimeo_triplet')
+    dataset_val = Vimeo90K_Test_Dataset(dataset_dir=vimeo90k_dir)
     dataloader_val = DataLoader(dataset_val, batch_size=16, num_workers=16, pin_memory=True, shuffle=False, drop_last=True)
 
     optimizer = optim.AdamW(ddp_model.parameters(), lr=args.lr_start, weight_decay=0)
@@ -81,9 +84,8 @@ def train(args, ddp_model):
             set_lr(optimizer, lr)
 
             optimizer.zero_grad()
-
             imgt_pred, loss_rec, loss_geo, loss_dis = ddp_model(img0, img1, embt, imgt, flow)
-
+            
             loss = loss_rec + loss_geo + loss_dis
             loss.backward()
             optimizer.step()
@@ -92,8 +94,20 @@ def train(args, ddp_model):
             avg_geo.update(loss_geo.cpu().data)
             avg_dis.update(loss_dis.cpu().data)
             train_time_interval = time.time() - time_stamp
+            
 
             if (iters+1) % 100 == 0 and local_rank == 0:
+                wandb.log({
+                    "loss_rec": loss_rec,
+                    "loss_geo": loss_geo,
+                    "loss_dis": loss_dis,
+                    "loss": loss,
+                    "example": [wandb.Image(img0[0]), wandb.Image(imgt[0]), wandb.Image(img1[0]), wandb.Image(imgt_pred[0])],
+                    "flow": [wandb.Image(flow[0]), wandb.Image(embt[0])],
+                    "epoch": epoch+1,
+                    "iter": iters+1,
+                    "lr" : lr,
+                })
                 logger.info('epoch:{}/{} iter:{}/{} time:{:.2f}+{:.2f} lr:{:.5e} loss_rec:{:.4e} loss_geo:{:.4e} loss_dis:{:.4e}'.format(epoch+1, args.epochs, iters+1, args.epochs * args.iters_per_epoch, data_time_interval, train_time_interval, lr, avg_rec.avg, avg_geo.avg, avg_dis.avg))
                 avg_rec.reset()
                 avg_geo.reset()
@@ -140,11 +154,14 @@ def evaluate(args, ddp_model, dataloader_val, epoch, logger):
     return np.array(psnr_list).mean()
 
 
+torch.autograd.set_detect_anomaly(True)
 
 if __name__ == '__main__':
+    
+
     parser = argparse.ArgumentParser(description='IFRNet')
     parser.add_argument('--model_name', default='IFRNet', type=str, help='IFRNet, IFRNet_L, IFRNet_S')
-    parser.add_argument('--local_rank', default=-1, type=int)
+    parser.add_argument('--local_rank', default=1, type=int)
     parser.add_argument('--world_size', default=4, type=int)
     parser.add_argument('--epochs', default=300, type=int)
     parser.add_argument('--eval_interval', default=1, type=int)
@@ -175,15 +192,20 @@ if __name__ == '__main__':
         from models.IFRNet_S import Model
 
     args.log_path = args.log_path + '/' + args.model_name
-    args.num_workers = args.batch_size
+    args.num_workers = 10 #args.batch_size
 
     model = Model().to(args.device)
     
+    if args.local_rank == 0:
+        wandb.init(project="IDL Project", entity="11785_cmu")
+        wandb.watch(model)
+    
     if args.resume_epoch != 0:
         model.load_state_dict(torch.load(args.resume_path, map_location='cpu'))
-        
+    
     ddp_model = DDP(model, device_ids=[args.local_rank], output_device=args.local_rank)
     
-    train(args, ddp_model)
+    
+    train(args, ddp_model,model)
     
     dist.destroy_process_group()
