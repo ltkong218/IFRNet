@@ -110,5 +110,5 @@ When using any parts of the Software or the Paper in your work, please cite the 
   author = {Kong, Lingtong and Jiang, Boyuan and Luo, Donghao and Chu, Wenqing and Huang, Xiaoming and Tai, Ying and Wang, Chengjie and Yang, Jie}, 
   title = {IFRNet: Intermediate Feature Refine Network for Efficient Frame Interpolation}, 
   booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, 
-  year = {2022},
+  year = {2022}
 }</code></pre>
