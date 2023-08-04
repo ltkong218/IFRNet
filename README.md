@@ -81,9 +81,9 @@ Results on the Middlebury Other dataset.
 
 ## Training on GoPro Dataset for 8x Frame Interpolation
 1. Start training by executing one of the following commands with selected model
-<pre><code>$ python -m torch.distributed.launch --nproc_per_node=4 train_vimeo90k.py --world_size 4 --model_name 'IFRNet' --epochs 300 --batch_size 6 --lr_start 1e-4 --lr_end 1e-5</code>
-<code>$ python -m torch.distributed.launch --nproc_per_node=4 train_vimeo90k.py --world_size 4 --model_name 'IFRNet_L' --epochs 300 --batch_size 6 --lr_start 1e-4 --lr_end 1e-5</code>
-<code>$ python -m torch.distributed.launch --nproc_per_node=4 train_vimeo90k.py --world_size 4 --model_name 'IFRNet_S' --epochs 300 --batch_size 6 --lr_start 1e-4 --lr_end 1e-5</code></pre>
+<pre><code>$ python -m torch.distributed.launch --nproc_per_node=4 train_gopro.py --world_size 4 --model_name 'IFRNet' --epochs 600 --batch_size 2 --lr_start 1e-4 --lr_end 1e-5</code>
+<code>$ python -m torch.distributed.launch --nproc_per_node=4 train_gopro.py --world_size 4 --model_name 'IFRNet_L' --epochs 600 --batch_size 2 --lr_start 1e-4 --lr_end 1e-5</code>
+<code>$ python -m torch.distributed.launch --nproc_per_node=4 train_gopro.py --world_size 4 --model_name 'IFRNet_S' --epochs 600 --batch_size 2 --lr_start 1e-4 --lr_end 1e-5</code></pre>
 
 Since inter-frame motion in 8x interpolation setting is relatively small, task-oriented flow distillation loss is omitted here. Due to the GoPro training set is a relatively small dataset, we suggest to use your specific datasets to train slow-motion generation for better results.
 
