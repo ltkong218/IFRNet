@@ -1,0 +1,3 @@
+# In addition to the packages installed by pytorch2timeloop-converter
+correlation
+imageio

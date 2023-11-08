@@ -1,0 +1,7 @@
+# Python
+__pycache__
+
+# Pre-trained models
+CVPR2022_IFRNet.zip
+checkpoints
+liteflownet/network-default.pth
