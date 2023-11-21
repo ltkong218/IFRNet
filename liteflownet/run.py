@@ -11,7 +11,7 @@ import torch
 try:
     from .correlation import correlation # the custom cost volume layer
 except:
-    sys.path.insert(0, './correlation'); import correlation # you should consider upgrading python
+    sys.path.insert(0, '/workspaces/fruc_workspace/src/external/IFRNet/liteflownet/correlation'); import correlation # you should consider upgrading python
 # end
 
 ##########################################################
