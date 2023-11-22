@@ -76,7 +76,7 @@ def random_reverse_time(img0, imgt, img1, flow, p=0.5):
 
 
 class Vimeo90K_Train_Dataset(Dataset):
-    def __init__(self, dataset_dir='/home/ltkong/Datasets/Vimeo90K/vimeo_triplet', augment=True):
+    def __init__(self, dataset_dir='workspaces/fruc_workspace/datasets/vimeo_triplet', augment=True):
         self.dataset_dir = dataset_dir
         self.augment = augment
         self.img0_list = []
@@ -125,7 +125,7 @@ class Vimeo90K_Train_Dataset(Dataset):
 
 
 class Vimeo90K_Test_Dataset(Dataset):
-    def __init__(self, dataset_dir='/home/ltkong/Datasets/Vimeo90K/vimeo_triplet'):
+    def __init__(self, dataset_dir='workspaces/fruc_workspace/datasets/vimeo_triplet'):
         self.dataset_dir = dataset_dir
         self.img0_list = []
         self.imgt_list = []

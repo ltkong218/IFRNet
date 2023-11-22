@@ -5,9 +5,9 @@ import time
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from models.IFRNet import Model
+# from models.IFRNet import Model
 # from models.IFRNet_L import Model
-# from models.IFRNet_S import Model
+from models.IFRNet_S import Model
 
 if torch.cuda.is_available():
     torch.backends.cudnn.enabled = True

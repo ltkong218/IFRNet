@@ -5,22 +5,22 @@ import torch
 import numpy as np
 from utils import read
 from metric import calculate_psnr, calculate_ssim
-from models.IFRNet import Model
+# from models.IFRNet import Model
 # from models.IFRNet_L import Model
-# from models.IFRNet_S import Model
+from models.IFRNet_S import Model
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 model = Model()
-model.load_state_dict(torch.load('checkpoints/IFRNet/IFRNet_Vimeo90K.pth'))
+# model.load_state_dict(torch.load('checkpoints/IFRNet/IFRNet_Vimeo90K.pth'))
 # model.load_state_dict(torch.load('checkpoints/IFRNet_large/IFRNet_L_Vimeo90K.pth'))
-# model.load_state_dict(torch.load('checkpoints/IFRNet_small/IFRNet_S_Vimeo90K.pth'))
+model.load_state_dict(torch.load('checkpoints/IFRNet_small/IFRNet_S_Vimeo90K.pth'))
 model.eval()
 model.cuda()
 
 # Replace the 'path' with your Vimeo90K dataset absolute path.
-path = '/home/ltkong/Datasets/Vimeo90K/vimeo_triplet/'
+path = '/workspaces/fruc_workspace/datasets/vimeo_triplet/'
 f = open(path + 'tri_testlist.txt', 'r')
 
 psnr_list = []

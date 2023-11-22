@@ -50,13 +50,13 @@ def train(args, ddp_model):
         logger.addHandler(fhlr)
         logger.info(args)
 
-    dataset_train = Vimeo90K_Train_Dataset(dataset_dir='/home/ltkong/Datasets/Vimeo90K/vimeo_triplet', augment=True)
+    dataset_train = Vimeo90K_Train_Dataset(dataset_dir='workspaces/fruc_workspace/datasets/vimeo_triplet', augment=True)
     sampler = DistributedSampler(dataset_train)
     dataloader_train = DataLoader(dataset_train, batch_size=args.batch_size, num_workers=args.num_workers, pin_memory=True, drop_last=True, sampler=sampler)
     args.iters_per_epoch = dataloader_train.__len__()
     iters = args.resume_epoch * args.iters_per_epoch
     
-    dataset_val = Vimeo90K_Test_Dataset(dataset_dir='/home/ltkong/Datasets/Vimeo90K/vimeo_triplet')
+    dataset_val = Vimeo90K_Test_Dataset(dataset_dir='workspaces/fruc_workspace/datasets/vimeo_triplet')
     dataloader_val = DataLoader(dataset_val, batch_size=16, num_workers=16, pin_memory=True, shuffle=False, drop_last=True)
 
     optimizer = optim.AdamW(ddp_model.parameters(), lr=args.lr_start, weight_decay=0)

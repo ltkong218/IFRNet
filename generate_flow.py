@@ -7,7 +7,7 @@ from utils import read, write
 
 
 # set vimeo90k_dir with your Vimeo90K triplet dataset path, like '/.../vimeo_triplet'
-vimeo90k_dir = '/home/ltkong/Datasets/Vimeo90K/vimeo_triplet'
+vimeo90k_dir = '/workspaces/fruc_workspace/datasets/vimeo_triplet'
 
 vimeo90k_sequences_dir = os.path.join(vimeo90k_dir, 'sequences')
 vimeo90k_flow_dir = os.path.join(vimeo90k_dir, 'flow')
