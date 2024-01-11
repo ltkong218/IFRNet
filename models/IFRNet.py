@@ -104,9 +104,9 @@ class Decoder3(nn.Module):
             nn.ConvTranspose2d(216, 52, 4, 2, 1, bias=True)
         )
 
-    def forward(self, ft_, f0, f1, up_flow0, up_flow1):
-        f0_warp = warp(f0, up_flow0)
-        f1_warp = warp(f1, up_flow1)
+    def forward(self, ft_, f0, f1, up_flow0, up_flow1, up_flow_shape):
+        f0_warp = warp(f0, up_flow0, up_flow_shape)
+        f1_warp = warp(f1, up_flow1, up_flow_shape)
         f_in = torch.cat([ft_, f0_warp, f1_warp, up_flow0, up_flow1], 1)
         f_out = self.convblock(f_in)
         return f_out
@@ -121,9 +121,9 @@ class Decoder2(nn.Module):
             nn.ConvTranspose2d(144, 36, 4, 2, 1, bias=True)
         )
 
-    def forward(self, ft_, f0, f1, up_flow0, up_flow1):
-        f0_warp = warp(f0, up_flow0)
-        f1_warp = warp(f1, up_flow1)
+    def forward(self, ft_, f0, f1, up_flow0, up_flow1, up_flow_shape):
+        f0_warp = warp(f0, up_flow0, up_flow_shape)
+        f1_warp = warp(f1, up_flow1, up_flow_shape)
         f_in = torch.cat([ft_, f0_warp, f1_warp, up_flow0, up_flow1], 1)
         f_out = self.convblock(f_in)
         return f_out
@@ -138,9 +138,9 @@ class Decoder1(nn.Module):
             nn.ConvTranspose2d(96, 8, 4, 2, 1, bias=True)
         )
         
-    def forward(self, ft_, f0, f1, up_flow0, up_flow1):
-        f0_warp = warp(f0, up_flow0)
-        f1_warp = warp(f1, up_flow1)
+    def forward(self, ft_, f0, f1, up_flow0, up_flow1, up_flow_shape):
+        f0_warp = warp(f0, up_flow0, up_flow_shape)
+        f1_warp = warp(f1, up_flow1, up_flow_shape)
         f_in = torch.cat([ft_, f0_warp, f1_warp, up_flow0, up_flow1], 1)
         f_out = self.convblock(f_in)
         return f_out
@@ -158,8 +158,9 @@ class Model(nn.Module):
         self.tr_loss = Ternary(7)
         self.rb_loss = Charbonnier_Ada()
         self.gc_loss = Geometry(3)
+        self.up_flow_init_shape = [1,2,1088,1920]  # (B,C,H,W). Default. Change as needed
 
-        
+
     def inference(self, img0, img1, embt, scale_factor=1.0):
         mean_ = torch.cat([img0, img1], 2).mean(1, keepdim=True).mean(2, keepdim=True).mean(3, keepdim=True)
         img0 = img0 - mean_
@@ -176,17 +177,28 @@ class Model(nn.Module):
         up_flow1_4 = out4[:, 2:4]
         ft_3_ = out4[:, 4:]
 
-        out3 = self.decoder3(ft_3_, f0_3, f1_3, up_flow0_4, up_flow1_4)
+        up_flow_shape = self.up_flow_init_shape
+        up_flow_shape[2] = int(up_flow_shape[2] / 8)
+        up_flow_shape[3] = int(up_flow_shape[3] / 8)
+        # up_flow_shape = [int(x) for x in up_flow_shape]
+
+        out3 = self.decoder3(ft_3_, f0_3, f1_3, up_flow0_4, up_flow1_4, up_flow_shape)
         up_flow0_3 = out3[:, 0:2] + 2.0 * resize(up_flow0_4, scale_factor=2.0)
         up_flow1_3 = out3[:, 2:4] + 2.0 * resize(up_flow1_4, scale_factor=2.0)
         ft_2_ = out3[:, 4:]
 
-        out2 = self.decoder2(ft_2_, f0_2, f1_2, up_flow0_3, up_flow1_3)
+        up_flow_shape[2] *= 2
+        up_flow_shape[3] *= 2
+
+        out2 = self.decoder2(ft_2_, f0_2, f1_2, up_flow0_3, up_flow1_3, up_flow_shape)
         up_flow0_2 = out2[:, 0:2] + 2.0 * resize(up_flow0_3, scale_factor=2.0)
         up_flow1_2 = out2[:, 2:4] + 2.0 * resize(up_flow1_3, scale_factor=2.0)
         ft_1_ = out2[:, 4:]
 
-        out1 = self.decoder1(ft_1_, f0_1, f1_1, up_flow0_2, up_flow1_2)
+        up_flow_shape[2] *= 2
+        up_flow_shape[3] *= 2
+
+        out1 = self.decoder1(ft_1_, f0_1, f1_1, up_flow0_2, up_flow1_2, up_flow_shape)
         up_flow0_1 = out1[:, 0:2] + 2.0 * resize(up_flow0_2, scale_factor=2.0)
         up_flow1_1 = out1[:, 2:4] + 2.0 * resize(up_flow1_2, scale_factor=2.0)
         up_mask_1 = torch.sigmoid(out1[:, 4:5])
@@ -197,8 +209,11 @@ class Model(nn.Module):
         up_mask_1 = resize(up_mask_1, scale_factor=(1.0/scale_factor))
         up_res_1 = resize(up_res_1, scale_factor=(1.0/scale_factor))
 
-        img0_warp = warp(img0, up_flow0_1)
-        img1_warp = warp(img1, up_flow1_1)
+        up_flow_shape[2] *= 2
+        up_flow_shape[3] *= 2
+
+        img0_warp = warp(img0, up_flow0_1, up_flow_shape)
+        img1_warp = warp(img1, up_flow1_1, up_flow_shape)
         imgt_merge = up_mask_1 * img0_warp + (1 - up_mask_1) * img1_warp + mean_
         imgt_pred = imgt_merge + up_res_1
         imgt_pred = torch.clamp(imgt_pred, 0, 1)
@@ -220,24 +235,38 @@ class Model(nn.Module):
         up_flow1_4 = out4[:, 2:4]
         ft_3_ = out4[:, 4:]
 
-        out3 = self.decoder3(ft_3_, f0_3, f1_3, up_flow0_4, up_flow1_4)
+        up_flow_shape = self.up_flow_init_shape
+        up_flow_shape[2] = int(up_flow_shape[2] / 8)
+        up_flow_shape[3] = int(up_flow_shape[3] / 8)
+        # up_flow_shape = [int(x) for x in up_flow_shape]
+
+        out3 = self.decoder3(ft_3_, f0_3, f1_3, up_flow0_4, up_flow1_4, up_flow_shape)
         up_flow0_3 = out3[:, 0:2] + 2.0 * resize(up_flow0_4, scale_factor=2.0)
         up_flow1_3 = out3[:, 2:4] + 2.0 * resize(up_flow1_4, scale_factor=2.0)
         ft_2_ = out3[:, 4:]
 
-        out2 = self.decoder2(ft_2_, f0_2, f1_2, up_flow0_3, up_flow1_3)
+        up_flow_shape[2] *= 2
+        up_flow_shape[3] *= 2
+
+        out2 = self.decoder2(ft_2_, f0_2, f1_2, up_flow0_3, up_flow1_3, up_flow_shape)
         up_flow0_2 = out2[:, 0:2] + 2.0 * resize(up_flow0_3, scale_factor=2.0)
         up_flow1_2 = out2[:, 2:4] + 2.0 * resize(up_flow1_3, scale_factor=2.0)
         ft_1_ = out2[:, 4:]
 
-        out1 = self.decoder1(ft_1_, f0_1, f1_1, up_flow0_2, up_flow1_2)
+        up_flow_shape[2] *= 2
+        up_flow_shape[3] *= 2
+
+        out1 = self.decoder1(ft_1_, f0_1, f1_1, up_flow0_2, up_flow1_2, up_flow_shape)
         up_flow0_1 = out1[:, 0:2] + 2.0 * resize(up_flow0_2, scale_factor=2.0)
         up_flow1_1 = out1[:, 2:4] + 2.0 * resize(up_flow1_2, scale_factor=2.0)
         up_mask_1 = torch.sigmoid(out1[:, 4:5])
         up_res_1 = out1[:, 5:]
-        
-        img0_warp = warp(img0, up_flow0_1)
-        img1_warp = warp(img1, up_flow1_1)
+
+        up_flow_shape[2] *= 2
+        up_flow_shape[3] *= 2
+
+        img0_warp = warp(img0, up_flow0_1, up_flow_shape)
+        img1_warp = warp(img1, up_flow1_1, up_flow_shape)
         imgt_merge = up_mask_1 * img0_warp + (1 - up_mask_1) * img1_warp + mean_
         imgt_pred = imgt_merge + up_res_1
         imgt_pred = torch.clamp(imgt_pred, 0, 1)
