@@ -11,7 +11,7 @@ def resize(x, scale_factor):
 
 def convrelu(in_channels, out_channels, kernel_size=3, stride=1, padding=1, dilation=1, groups=1, bias=True):
     return nn.Sequential(
-        nn.Conv2d(in_channels, out_channels, kernel_size, stride, padding, dilation, groups, bias=bias), 
+        nn.Conv2d(in_channels, out_channels, kernel_size, stride, padding, dilation, groups, bias=bias),
         nn.PReLU(out_channels)
     )
 
@@ -21,19 +21,19 @@ class ResBlock(nn.Module):
         super(ResBlock, self).__init__()
         self.side_channels = side_channels
         self.conv1 = nn.Sequential(
-            nn.Conv2d(in_channels, in_channels, kernel_size=3, stride=1, padding=1, bias=bias), 
+            nn.Conv2d(in_channels, in_channels, kernel_size=3, stride=1, padding=1, bias=bias),
             nn.PReLU(in_channels)
         )
         self.conv2 = nn.Sequential(
-            nn.Conv2d(side_channels, side_channels, kernel_size=3, stride=1, padding=1, bias=bias), 
+            nn.Conv2d(side_channels, side_channels, kernel_size=3, stride=1, padding=1, bias=bias),
             nn.PReLU(side_channels)
         )
         self.conv3 = nn.Sequential(
-            nn.Conv2d(in_channels, in_channels, kernel_size=3, stride=1, padding=1, bias=bias), 
+            nn.Conv2d(in_channels, in_channels, kernel_size=3, stride=1, padding=1, bias=bias),
             nn.PReLU(in_channels)
         )
         self.conv4 = nn.Sequential(
-            nn.Conv2d(side_channels, side_channels, kernel_size=3, stride=1, padding=1, bias=bias), 
+            nn.Conv2d(side_channels, side_channels, kernel_size=3, stride=1, padding=1, bias=bias),
             nn.PReLU(side_channels)
         )
         self.conv5 = nn.Conv2d(in_channels, in_channels, kernel_size=3, stride=1, padding=1, bias=bias)
@@ -54,22 +54,22 @@ class Encoder(nn.Module):
     def __init__(self):
         super(Encoder, self).__init__()
         self.pyramid1 = nn.Sequential(
-            convrelu(3, 32, 3, 2, 1), 
+            convrelu(3, 32, 3, 2, 1),
             convrelu(32, 32, 3, 1, 1)
         )
         self.pyramid2 = nn.Sequential(
-            convrelu(32, 48, 3, 2, 1), 
+            convrelu(32, 48, 3, 2, 1),
             convrelu(48, 48, 3, 1, 1)
         )
         self.pyramid3 = nn.Sequential(
-            convrelu(48, 72, 3, 2, 1), 
+            convrelu(48, 72, 3, 2, 1),
             convrelu(72, 72, 3, 1, 1)
         )
         self.pyramid4 = nn.Sequential(
-            convrelu(72, 96, 3, 2, 1), 
+            convrelu(72, 96, 3, 2, 1),
             convrelu(96, 96, 3, 1, 1)
         )
-        
+
     def forward(self, img):
         f1 = self.pyramid1(img)
         f2 = self.pyramid2(f1)
@@ -82,14 +82,14 @@ class Decoder4(nn.Module):
     def __init__(self):
         super(Decoder4, self).__init__()
         self.convblock = nn.Sequential(
-            convrelu(192+1, 192), 
-            ResBlock(192, 32), 
+            convrelu(192+1, 192),
+            ResBlock(192, 32),
             nn.ConvTranspose2d(192, 76, 4, 2, 1, bias=True)
         )
-        
+
     def forward(self, f0, f1, embt):
         b, c, h, w = f0.shape
-        embt = embt.repeat(1, 1, h, w)
+        embt = embt.repeat(b, 1, h, w)
         f_in = torch.cat([f0, f1, embt], 1)
         f_out = self.convblock(f_in)
         return f_out
@@ -99,8 +99,8 @@ class Decoder3(nn.Module):
     def __init__(self):
         super(Decoder3, self).__init__()
         self.convblock = nn.Sequential(
-            convrelu(220, 216), 
-            ResBlock(216, 32), 
+            convrelu(220, 216),
+            ResBlock(216, 32),
             nn.ConvTranspose2d(216, 52, 4, 2, 1, bias=True)
         )
 
@@ -116,8 +116,8 @@ class Decoder2(nn.Module):
     def __init__(self):
         super(Decoder2, self).__init__()
         self.convblock = nn.Sequential(
-            convrelu(148, 144), 
-            ResBlock(144, 32), 
+            convrelu(148, 144),
+            ResBlock(144, 32),
             nn.ConvTranspose2d(144, 36, 4, 2, 1, bias=True)
         )
 
@@ -133,11 +133,11 @@ class Decoder1(nn.Module):
     def __init__(self):
         super(Decoder1, self).__init__()
         self.convblock = nn.Sequential(
-            convrelu(100, 96), 
-            ResBlock(96, 32), 
+            convrelu(100, 96),
+            ResBlock(96, 32),
             nn.ConvTranspose2d(96, 8, 4, 2, 1, bias=True)
         )
-        
+
     def forward(self, ft_, f0, f1, up_flow0, up_flow1, up_flow_shape):
         f0_warp = warp(f0, up_flow0, up_flow_shape)
         f1_warp = warp(f1, up_flow1, up_flow_shape)
